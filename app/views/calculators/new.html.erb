@@ -1,0 +1,15 @@
+<h2>Calculator</h2>
+
+<%= form_tag do %>
+  <%= text_field_tag(:calculation) %>
+  <%= submit_tag('Calculate') %>
+  <%= button_tag('Clear', class: 'clear') %>
+<% end %>
+
+<div class="calculator-buttons">
+  <%= button_tag('0', class: '0') %>
+
+  <% number_buttons.each do |button| %>
+    <%= button %>
+  <% end %>
+</div>
