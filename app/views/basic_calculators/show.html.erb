@@ -1,7 +1,7 @@
 <h2>Calculator</h2>
 
-<%= form_tag do %>
-  <%= text_field_tag(:calculation) %>
+<%= form_for [@calculator, @calculation] do %>
+  <%= text_field_tag(:equation) %>
   <%= submit_tag('Calculate') %>
   <%= button_tag('Clear', class: 'clear') %>
 <% end %>

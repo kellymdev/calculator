@@ -10,12 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_18_210353) do
+ActiveRecord::Schema.define(version: 2018_07_18_210742) do
 
   create_table "basic_calculators", force: :cascade do |t|
     t.decimal "memory"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "calculations", force: :cascade do |t|
+    t.string "equation"
+    t.string "answer"
+    t.integer "basic_calculator_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["basic_calculator_id"], name: "index_calculations_on_basic_calculator_id"
   end
 
 end
