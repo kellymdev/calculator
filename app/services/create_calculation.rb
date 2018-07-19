@@ -10,9 +10,9 @@ class CreateCalculation
 
   attr_reader :calculator, :equation
 
-  def initialize(calculator, calculation_params)
+  def initialize(calculator, equation)
     @calculator = calculator
-    @equation = calculation_params[:equation]
+    @equation = equation
   end
 
   def call

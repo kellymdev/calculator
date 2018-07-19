@@ -6,7 +6,7 @@ RSpec.describe CalculationsController, type: :controller do
   describe '#create' do
     let(:params) do
       {
-        calculator_id: calculator.to_param,
+        basic_calculator_id: calculator.to_param,
         calculation: {
           equation: equation
         }
@@ -17,9 +17,25 @@ RSpec.describe CalculationsController, type: :controller do
       let(:equation) { '1+2' }
 
       it 'calls the CreateCalculation service' do
-        expect(CreationCalculation).to receive(:new).with(calculator, { equation: equation })
+        expect(CreateCalculation).to receive(:new).with(calculator, equation).and_call_original
 
-        post :create { params: params }
+        post :create, { params: params }
+      end
+    end
+
+    context 'with invalid params' do
+      let(:equation) { '3+' }
+
+      it 'calls the CreateCalculation service' do
+        expect(CreateCalculation).to receive(:new).with(calculator, equation).and_call_original
+
+        post :create, { params: params }
+      end
+
+      it 'creates a flash error' do
+        post :create, { params: params }
+
+        expect(flash[:error]).to eq 'Equation is too short (minimum is 3 characters) and Equation must contain a number either side of an operator'
       end
     end
   end

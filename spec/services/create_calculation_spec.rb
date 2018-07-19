@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe CreateCalculation, type: :service do
   describe '#call' do
     let(:calculator) { BasicCalculator.create! }
-    let(:service) { CreateCalculation.new(calculator, { equation: equation }) }
+    let(:service) { CreateCalculation.new(calculator, equation) }
 
     context 'with a valid equation' do
       context 'using +' do

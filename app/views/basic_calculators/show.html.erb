@@ -1,5 +1,7 @@
 <h2>Calculator</h2>
 
+<%= render partial: 'errors' if flash[:error] %>
+
 <div class="answer">
   <p><%= @calculator.previous_calculation&.answer %></p>
 </div>
