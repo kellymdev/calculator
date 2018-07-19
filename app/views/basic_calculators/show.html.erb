@@ -1,10 +1,12 @@
 <h2>Calculator</h2>
 
-<%= render partial: 'errors' if flash[:error] %>
-
-<div class="answer">
-  <p><%= @calculator.previous_calculation&.answer %></p>
-</div>
+<% if flash[:error].present? %>
+  <%= render partial: 'errors' %>
+<% else %>
+  <div class="answer">
+    <p><%= @calculator.previous_calculation&.answer %></p>
+  </div>
+<% end %>
 
 <%= form_for [@calculator, @calculation] do |f| %>
   <%= f.text_field(:equation) %>
