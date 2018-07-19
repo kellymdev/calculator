@@ -1,5 +1,9 @@
 <h2>Calculator</h2>
 
+<div class="answer">
+  <p><%= @calculator.previous_calculation&.answer %></p>
+</div>
+
 <%= form_for [@calculator, @calculation] do |f| %>
   <%= f.text_field(:equation) %>
   <%= f.submit('Calculate') %>
