@@ -38,5 +38,57 @@ RSpec.describe CreateCalculation, type: :service do
         end
       end
     end
+
+    context 'with an invalid equation' do
+      context 'when the equation is too short' do
+        let(:equation) { '12' }
+
+        it 'creates an error on the service' do
+          service.call
+
+          expect(service.errors.full_messages.to_sentence).to eq 'Equation is too short (minimum is 3 characters), Equation must contain one of +, -, * or /, and Equation must contain a number either side of an operator'
+        end
+      end
+
+      context 'when the equation contains only a number' do
+        let(:equation) { '123' }
+
+        it 'creates an error on the service' do
+          service.call
+
+          expect(service.errors.full_messages.to_sentence).to eq 'Equation must contain one of +, -, * or / and Equation must contain a number either side of an operator'
+        end
+      end
+
+      context 'when the equation is missing the first number' do
+        let(:equation) { '+12' }
+
+        it 'creates an error on the service' do
+          service.call
+
+          expect(service.errors.full_messages.to_sentence).to eq 'Equation must contain a number either side of an operator'
+        end
+      end
+
+      context 'when the equation is missing the second number' do
+        let(:equation) { '12+' }
+
+        it 'creates an error on the service' do
+          service.call
+
+          expect(service.errors.full_messages.to_sentence).to eq 'Equation must contain a number either side of an operator'
+        end
+      end
+
+      context 'when the equation contains a letter' do
+        let(:equation) { 'a+2' }
+
+        it 'creates an error on the service' do
+          service.call
+
+          expect(service.errors.full_messages.to_sentence).to eq 'Equation must contain a number either side of an operator'
+        end
+      end
+    end
   end
 end

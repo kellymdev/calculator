@@ -6,6 +6,7 @@ class CreateCalculation
   validates :calculator, presence: true
   validates :equation, { length: { minimum: 3 } }
   validate :equation_contains_operator
+  validate :equation_contains_more_than_one_number
 
   attr_reader :calculator, :equation
 
@@ -31,7 +32,11 @@ class CreateCalculation
   end
 
   def equation_contains_operator
-    errors.add("must contain one of +, -, * or /") unless equation.match(/\A\d+[\+\-\*\/]\d+\z/)
+    errors.add(:equation, "must contain one of +, -, * or /") unless equation.match(/[\+\-\*\/]/)
+  end
+
+  def equation_contains_more_than_one_number
+    errors.add(:equation, 'must contain a number either side of an operator') unless equation_parts.present?
   end
 
   def calculate_answer
@@ -51,6 +56,9 @@ class CreateCalculation
 
   def equation_parts
     matches = equation.match(/\A(\d+)([\+\-\*\/])(\d+)\z/)
+
+    return unless matches
+
     {
       number1: matches[1].to_i,
       operator: matches[2],
