@@ -11,9 +11,15 @@
 <% end %>
 
 <div class="calculator-buttons">
-  <%= button_tag('0', class: '0') %>
+  <%= button_tag('0', class: 'calculator-button button-0') %>
 
   <% number_buttons.each do |button| %>
+    <%= button %>
+  <% end %>
+</div>
+
+<div class="operator-buttons">
+  <% operator_buttons.each do |button| %>
     <%= button %>
   <% end %>
 </div>
