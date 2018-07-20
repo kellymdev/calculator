@@ -10,7 +10,13 @@ $(document).ready(function() {
     e.preventDefault();
     clearAnswer();
     clearInputField();
-  })
+  });
+
+  $('.button-mr').on('click', function(e) {
+    e.preventDefault();
+    var memoryValue = $(this).attr('data');
+    updateCalculatorDisplay(memoryValue);
+  });
 });
 
 function updateCalculatorDisplay(buttonValue) {
