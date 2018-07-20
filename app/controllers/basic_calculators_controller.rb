@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class BasicCalculatorsController < ApplicationController
-  before_action :find_calculator, only: :show
+  before_action :find_calculator, only: [:show, :update_memory]
 
   def index
     @calculator = BasicCalculator.new
@@ -16,6 +16,12 @@ class BasicCalculatorsController < ApplicationController
 
   def show
     @calculation = @calculator.calculations.new
+  end
+
+  def update_memory
+    @calculator.update(memory: @calculator.previous_calculation&.answer)
+
+    redirect_to @calculator
   end
 
   private

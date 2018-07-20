@@ -5,4 +5,6 @@ Rails.application.routes.draw do
   resources :basic_calculators, only: [:index, :create, :show] do
     resources :calculations, only: [:create]
   end
+
+  post 'basic_calculators/:id/update_memory', to: 'basic_calculators#update_memory', as: :basic_calculator_update_memory
 end

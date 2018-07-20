@@ -30,4 +30,15 @@ RSpec.describe BasicCalculatorsController, type: :controller do
       expect(response.status).to eq 200
     end
   end
+
+  describe '#update_memory' do
+    let!(:calculator) { BasicCalculator.create!(memory: 1) }
+    let!(:calculation) { calculator.calculations.create!(equation: '1+2', answer: 3) }
+
+    it 'updates the memory of the calculator' do
+      post :update_memory, params: { id: calculator.to_param }
+
+      expect(calculator.reload.memory).to eq 3
+    end
+  end
 end
