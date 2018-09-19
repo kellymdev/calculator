@@ -15,7 +15,7 @@ $(document).on('turbolinks:load', function() {
   $('.button-mr').on('click', function(e) {
     e.preventDefault();
     var memoryValue = $(this).attr('data');
-    updateCalculatorDisplay(memoryValue);
+    updateCalculatorDisplay(memoryValue || 0);
   });
 });
 
