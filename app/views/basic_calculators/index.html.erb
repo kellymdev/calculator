@@ -10,17 +10,11 @@
       <td>Calculator id</td>
       <td>Previous calculation</td>
       <td>Previous answer</td>
+      <td>Memory</td>
       <td></td>
     </tr>
   </thead>
 
   <tbody>
-    <% @calculators.each do |calculator| %>
-      <tr>
-        <td><%= calculator.id %></td>
-        <td><%= calculator.previous_calculation&.equation %></td>
-        <td><%= calculator.previous_calculation&.answer %></td>
-        <td><%= link_to('Show', basic_calculator_path(calculator)) %></td>
-      </tr>
-    <% end %>
+    <%= render partial: 'calculator', collection: @calculators %>
   </tbody>

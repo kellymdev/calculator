@@ -1,0 +1,7 @@
+<tr>
+  <td><%= calculator.id %></td>
+  <td><%= calculator.previous_calculation&.equation %></td>
+  <td><%= calculator.previous_calculation&.answer %></td>
+  <td><%= calculator.memory %></td>
+  <td><%= link_to('Show', basic_calculator_path(calculator)) %></td>
+</tr>
