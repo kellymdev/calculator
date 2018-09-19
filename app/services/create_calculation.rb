@@ -55,14 +55,14 @@ class CreateCalculation
   end
 
   def equation_parts
-    matches = equation.match(/\A(\d+)([\+\-\*\/])(\d+)\z/)
+    matches = equation.match(/\A(\d+\.?\d?)([\+\-\*\/])(\d+.?\d?)\z/)
 
     return unless matches
 
     {
-      number1: matches[1].to_i,
+      number1: matches[1].to_d,
       operator: matches[2],
-      number2: matches[3].to_i
+      number2: matches[3].to_d
     }
   end
 end
