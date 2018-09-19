@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe BasicCalculatorsController, type: :controller do
+  render_views
+
   describe '#index' do
     it 'returns http status 200' do
       get :index
@@ -77,6 +79,20 @@ RSpec.describe BasicCalculatorsController, type: :controller do
 
         expect(calculator.reload.memory).to eq 2
       end
+    end
+  end
+
+  describe 'destroy' do
+    let!(:calculator) { BasicCalculator.create! }
+
+    it 'deletes the calculator' do
+      expect { delete :destroy, params: { id: calculator.to_param } }.to change { BasicCalculator.count }.by(-1)
+    end
+
+    it 'displays a success message' do
+      delete :destroy, params: { id: calculator.to_param }
+
+      expect(flash[:success]).to eq 'Calculator successfully deleted'
     end
   end
 end

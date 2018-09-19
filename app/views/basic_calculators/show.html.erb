@@ -37,5 +37,6 @@
 </div>
 
 <div class="back-links">
-  <%= link_to 'Back to calculators', basic_calculators_path %>
+  <%= link_to('Delete Calculator', basic_calculator_path(@calculator), data: { confirm: 'Are you sure?' }, method: :delete) %> | 
+  <%= link_to('Back to calculators', basic_calculators_path) %>
 </div>

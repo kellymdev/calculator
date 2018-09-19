@@ -3,5 +3,5 @@
   <td><%= calculator.previous_calculation&.equation %></td>
   <td><%= calculator.previous_calculation&.answer %></td>
   <td><%= calculator.memory %></td>
-  <td><%= link_to('Show', basic_calculator_path(calculator)) %></td>
+  <td><%= link_to('Show', basic_calculator_path(calculator)) %> | <%= link_to('Delete', basic_calculator_path(calculator), data: { confirm: 'Are you sure?'}, method: :delete) %></td>
 </tr>

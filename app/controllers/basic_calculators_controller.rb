@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class BasicCalculatorsController < ApplicationController
-  before_action :find_calculator, only: [:show, :update_memory]
+  before_action :find_calculator, only: [:show, :update_memory, :destroy]
 
   def index
     @calculator = BasicCalculator.new
@@ -22,6 +22,14 @@ class BasicCalculatorsController < ApplicationController
     UpdateCalculatorMemory.new(@calculator, params[:commit]).call
 
     redirect_to @calculator
+  end
+
+  def destroy
+    @calculator.destroy!
+
+    redirect_to basic_calculators_path
+
+    flash[:success] = 'Calculator successfully deleted'
   end
 
   private
