@@ -32,13 +32,51 @@ RSpec.describe BasicCalculatorsController, type: :controller do
   end
 
   describe '#update_memory' do
-    let!(:calculator) { BasicCalculator.create!(memory: 1) }
+    let!(:calculator) { BasicCalculator.create!(memory: 5) }
     let!(:calculation) { calculator.calculations.create!(equation: '1+2', answer: 3) }
 
-    it 'updates the memory of the calculator' do
-      post :update_memory, params: { id: calculator.to_param }
+    context 'for M+' do
+      let(:commit) { UpdateCalculatorMemory::MEMORY_PLUS }
+      let(:params) do
+        {
+          id: calculator.to_param,
+          commit: commit
+        }
+      end
 
-      expect(calculator.reload.memory).to eq 3
+      it 'calls the UpdateCalculatorMemory service' do
+        expect(UpdateCalculatorMemory).to receive(:new).with(calculator, commit).and_call_original
+
+        post :update_memory, params: params
+      end
+
+      it 'adds the previous calculation value to the memory' do
+        post :update_memory, params: params
+
+        expect(calculator.reload.memory).to eq 8
+      end
+    end
+
+    context 'for M-' do
+      let(:commit) { UpdateCalculatorMemory::MEMORY_MINUS }
+      let(:params) do
+        {
+          id: calculator.to_param,
+          commit: commit
+        }
+      end
+
+      it 'calls the UpdateCalculatorMemory service' do
+        expect(UpdateCalculatorMemory).to receive(:new).with(calculator, commit).and_call_original
+
+        post :update_memory, params: params
+      end
+
+      it 'subtracts the previous calculation value from memory' do
+        post :update_memory, params: params
+
+        expect(calculator.reload.memory).to eq 2
+      end
     end
   end
 end

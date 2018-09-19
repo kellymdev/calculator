@@ -30,7 +30,8 @@
 
 <div class="memory-buttons">
   <%= form_tag(basic_calculator_update_memory_path(@calculator)) do %>
-    <%= submit_tag('M+') %>
+    <%= submit_tag('M+', class: 'memory-button button-mplus') %>
+    <%= submit_tag('M-', class: 'memory-button button-mminus') %>
     <%= button_tag('MR', class: 'memory-button button-mr', data: @calculator.memory) %>
   <% end %>
 </div>

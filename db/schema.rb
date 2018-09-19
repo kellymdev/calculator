@@ -20,7 +20,7 @@ ActiveRecord::Schema.define(version: 2018_07_18_210742) do
 
   create_table "calculations", force: :cascade do |t|
     t.string "equation"
-    t.string "answer"
+    t.decimal "answer"
     t.integer "basic_calculator_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

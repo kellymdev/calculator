@@ -19,7 +19,7 @@ class BasicCalculatorsController < ApplicationController
   end
 
   def update_memory
-    @calculator.update(memory: @calculator.previous_calculation&.answer)
+    UpdateCalculatorMemory.new(@calculator, params[:commit]).call
 
     redirect_to @calculator
   end
