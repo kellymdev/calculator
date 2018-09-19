@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).on('turbolinks:load', function() {
   $('.calculator-button').on('click', function(e) {
     e.preventDefault();
     clearAnswer();
