@@ -129,6 +129,14 @@ RSpec.describe CreateCalculation, type: :service do
               expect(service.call).to eq 3
             end
           end
+
+          context 'with all operators' do
+            let(:equation) { '6+1*9-10/2' }
+
+            it 'performs the multiplication, division, addition and subtraction in order' do
+              expect(service.call).to eq 10
+            end
+          end
         end
       end
     end

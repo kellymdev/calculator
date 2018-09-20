@@ -87,7 +87,7 @@ class CreateCalculation
       number_2 = match_groups[2].to_d
       rest_of_equation = match_groups[3]
     else
-      match_groups = equation.match(/\A(.*)(\d+\.?\d?)[#{operator}](\d+\.?\d?)(.*)\z/)
+      match_groups = equation.match(/\A(.*[*\/+-])(\d+\.?\d?)[#{operator}](\d+\.?\d?)(.*)\z/)
       beginning_of_equation = match_groups[1]
       number_1 = match_groups[2].to_d
       number_2 = match_groups[3].to_d
