@@ -1,42 +1,44 @@
 <h2>Calculator</h2>
 
-<% if flash[:error].present? %>
-  <%= render partial: 'errors' %>
-<% else %>
-  <div class="answer">
-    <p><%= @calculator.previous_calculation&.answer %></p>
+<div class="calculator">
+  <% if flash[:error].present? %>
+    <%= render partial: 'errors' %>
+  <% else %>
+    <div class="answer">
+      <p><%= @calculator.previous_calculation&.answer %></p>
+    </div>
+  <% end %>
+
+  <%= form_for [@calculator, @calculation] do |f| %>
+    <%= f.text_field(:equation) %>
+    <%= f.submit('Calculate', class: 'calculate') %>
+    <%= button_tag('Clear', class: 'clear') %>
+  <% end %>
+
+  <div class="calculator-buttons">
+    <%= button_tag('0', class: 'calculator-button button-0') %>
+
+    <% number_buttons.each do |button| %>
+      <%= button %>
+    <% end %>
   </div>
-<% end %>
 
-<%= form_for [@calculator, @calculation] do |f| %>
-  <%= f.text_field(:equation) %>
-  <%= f.submit('Calculate') %>
-  <%= button_tag('Clear', class: 'clear') %>
-<% end %>
+  <div class="operator-buttons">
+    <% operator_buttons.each do |button| %>
+      <%= button %>
+    <% end %>
+  </div>
 
-<div class="calculator-buttons">
-  <%= button_tag('0', class: 'calculator-button button-0') %>
+  <div class="memory-buttons">
+    <%= form_tag(basic_calculator_update_memory_path(@calculator)) do %>
+      <%= submit_tag('M+', class: 'memory-button button-mplus') %>
+      <%= submit_tag('M-', class: 'memory-button button-mminus') %>
+      <%= button_tag('MR', class: 'memory-button button-mr', data: @calculator.memory) %>
+    <% end %>
+  </div>
 
-  <% number_buttons.each do |button| %>
-    <%= button %>
-  <% end %>
-</div>
-
-<div class="operator-buttons">
-  <% operator_buttons.each do |button| %>
-    <%= button %>
-  <% end %>
-</div>
-
-<div class="memory-buttons">
-  <%= form_tag(basic_calculator_update_memory_path(@calculator)) do %>
-    <%= submit_tag('M+', class: 'memory-button button-mplus') %>
-    <%= submit_tag('M-', class: 'memory-button button-mminus') %>
-    <%= button_tag('MR', class: 'memory-button button-mr', data: @calculator.memory) %>
-  <% end %>
-</div>
-
-<div class="back-links">
-  <%= link_to('Delete Calculator', basic_calculator_path(@calculator), data: { confirm: 'Are you sure?' }, method: :delete) %> | 
-  <%= link_to('Back to calculators', basic_calculators_path) %>
+  <div class="back-links">
+    <%= link_to('Delete Calculator', basic_calculator_path(@calculator), data: { confirm: 'Are you sure?' }, method: :delete) %> | 
+    <%= link_to('Back to calculators', basic_calculators_path) %>
+  </div>
 </div>

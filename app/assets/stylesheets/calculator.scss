@@ -1,3 +1,41 @@
+// Fonts
+$heading-font: 'Poppins', sans-serif;
+$calculator-display-font: 'Roboto Mono', monospace;
+$body-font: 'Noto Sans', sans-serif;
+
+h2 {
+  font-family: $heading-font;
+}
+
+body {
+  font-family: $body-font;
+}
+
+.answer {
+  p {
+    font-family: $calculator-display-font;
+    font-size: 2em;
+  }
+}
+
+input[type=text] {
+  font-size: 1.5em;
+  border-radius: 2px;
+}
+
+.calculate,
+.clear {
+  font-size: 1em;
+  border-radius: 2px;
+}
+
+.calculator-button,
+.memory-button {
+  margin: 5px;
+  font-size: 2em;
+  border-radius: 2px;
+}
+
 .back-links {
   margin-top: 30px;
 }

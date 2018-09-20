@@ -1,5 +1,11 @@
 <h2>Calculators</h2>
 
+<% if flash[:success].present? %>
+  <div class="success-message">
+    <%= flash[:success] %>
+  </div>
+<% end %>
+
 <%= form_for(@calculator) do |f| %>
   <%= f.submit 'New Calculator' %>
 <% end %>
