@@ -21,6 +21,7 @@ class CreateCalculation
   end
 
   def call
+    return unless equation.present?
     return unless valid?
 
     answer = calculate_answer
