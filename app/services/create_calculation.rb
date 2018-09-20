@@ -11,6 +11,7 @@ class CreateCalculation
   validates :equation, { length: { minimum: 3 } }
   validate :equation_contains_operator
   validate :equation_contains_more_than_one_number
+  validate :equation_contains_no_letters
 
   attr_reader :calculator, :equation
 
@@ -41,6 +42,10 @@ class CreateCalculation
 
   def equation_contains_more_than_one_number
     errors.add(:equation, 'must contain a number either side of an operator') unless starts_and_ends_with_number?
+  end
+
+  def equation_contains_no_letters
+    errors.add(:equation, 'must not contain any letters') if equation.match(/[a-zA-Z]/)
   end
 
   def calculate_simple_answer(equation)

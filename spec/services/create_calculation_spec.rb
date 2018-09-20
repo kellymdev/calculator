@@ -191,12 +191,24 @@ RSpec.describe CreateCalculation, type: :service do
       end
 
       context 'when the equation contains a letter' do
-        let(:equation) { 'a+2' }
+        context 'with a simple equation' do
+          let(:equation) { 'a+2' }
 
-        it 'creates an error on the service' do
-          service.call
+          it 'creates an error on the service' do
+            service.call
 
-          expect(service.errors.full_messages.to_sentence).to eq 'Equation must contain a number either side of an operator'
+            expect(service.errors.full_messages.to_sentence).to eq 'Equation must contain a number either side of an operator and Equation must not contain any letters'
+          end
+        end
+
+        context 'with a complex equation' do
+          let(:equation) { '2+a*3' }
+
+          it 'creates an error on the service' do
+            service.call
+
+            expect(service.errors.full_messages.to_sentence).to eq 'Equation must not contain any letters'
+          end
         end
       end
     end
