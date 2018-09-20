@@ -77,6 +77,60 @@ RSpec.describe CreateCalculation, type: :service do
           end
         end
       end
+
+      context 'performing multiple operations' do
+        context 'using two of the same operator' do
+          context 'multiplication' do
+            let(:equation) { '2*3*4' }
+
+            it 'performs the operations in order' do
+              expect(service.call).to eq 24
+            end
+          end
+
+          context 'division' do
+            let(:equation) { '20/2/5' }
+
+            it 'performs the operations in order' do
+              expect(service.call).to eq 2
+            end
+          end
+
+          context 'addition' do
+            let(:equation) { '1+2+3' }
+
+            it 'performs the operations in order' do
+              expect(service.call).to eq 6
+            end
+          end
+
+          context 'subtraction' do
+            let(:equation) { '20-10-4' }
+
+            it 'performs the operations in order' do
+              expect(service.call).to eq 6
+            end
+          end
+        end
+
+        context 'using a combination of operators' do
+          context 'multiplication and addition' do
+            let(:equation) { '1+2*3' }
+
+            it 'performs the multiplication first, then the addition' do
+              expect(service.call).to eq 7
+            end
+          end
+
+          context 'division and subtraction' do
+            let(:equation) { '5-6/3' }
+
+            it 'performs the division first, then the subtraction' do
+              expect(service.call).to eq 3
+            end
+          end
+        end
+      end
     end
 
     context 'with an invalid equation' do
@@ -86,7 +140,7 @@ RSpec.describe CreateCalculation, type: :service do
         it 'creates an error on the service' do
           service.call
 
-          expect(service.errors.full_messages.to_sentence).to eq 'Equation is too short (minimum is 3 characters), Equation must contain one of +, -, * or /, and Equation must contain a number either side of an operator'
+          expect(service.errors.full_messages.to_sentence).to eq 'Equation is too short (minimum is 3 characters) and Equation must contain one of +, -, * or /'
         end
       end
 
@@ -96,7 +150,7 @@ RSpec.describe CreateCalculation, type: :service do
         it 'creates an error on the service' do
           service.call
 
-          expect(service.errors.full_messages.to_sentence).to eq 'Equation must contain one of +, -, * or / and Equation must contain a number either side of an operator'
+          expect(service.errors.full_messages.to_sentence).to eq 'Equation must contain one of +, -, * or /'
         end
       end
 
