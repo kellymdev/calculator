@@ -26,7 +26,9 @@ function updateCalculatorDisplay(buttonValue) {
 }
 
 function clearAnswer() {
-  $('.answer p').text('Click calculate to see the answer');
+  $('.answer p').text('0.0');
+
+  $('.instruction').show();
 }
 
 function clearInputField() {

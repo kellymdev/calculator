@@ -11,29 +11,60 @@ body {
   font-family: $body-font;
 }
 
-.answer {
-  p {
-    font-family: $calculator-display-font;
-    font-size: 2em;
+.instruction {
+  display: none;
+}
+
+.new_basic_calculator {
+  margin-bottom: 20px;
+}
+
+.calculator-list {
+  border: 1px solid black;
+
+  th, td {
+    border-bottom: 1px solid black;
   }
 }
 
-input[type=text] {
-  font-size: 1.5em;
-  border-radius: 2px;
+.errors {
+  color: red;
 }
 
-.calculate,
-.clear {
-  font-size: 1em;
-  border-radius: 2px;
-}
+.calculator {
+  background-color: gray;
+  padding: 20px;
+  border-radius: 5px;
+  max-width: 280px;
 
-.calculator-button,
-.memory-button {
-  margin: 5px;
-  font-size: 2em;
-  border-radius: 2px;
+  .answer {
+    p {
+      font-family: $calculator-display-font;
+      font-size: 2em;
+      text-align: right;
+    }
+  }
+
+  input[type=text] {
+    font-size: 1.5em;
+    border-radius: 2px;
+    margin: 5px;
+    width: 265px;
+  }
+
+  .calculate,
+  .clear {
+    font-size: 1em;
+    border-radius: 2px;
+    margin: 5px;
+  }
+
+  .calculator-button,
+  .memory-button {
+    margin: 5px;
+    font-size: 2em;
+    border-radius: 2px;
+  }
 }
 
 .back-links {
