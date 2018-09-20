@@ -6,7 +6,6 @@ class CreateCalculation
   OPERATOR_PATTERN = /[\+\-\*\/]/
   SIMPLE_EQUATION_PATTERN = /\A(\d+\.?\d*)([\+\-\*\/])(\d+\.?\d*)\z/
   ENDING_NUMBER_PATTERN = /(\d+\.?\d*)\z/
-  STARTING_NUMBER_PATTERN = /\A(.+)(\d+\.?\d*)\z/
 
   validates :calculator, presence: true
   validates :equation, { length: { minimum: 3 } }
@@ -23,11 +22,7 @@ class CreateCalculation
   def call
     return unless valid?
 
-    answer = if simple_equation?(equation)
-      calculate_simple_answer(equation)
-    else
-      calculate_answer
-    end
+    answer = calculate_answer
 
     create_calculation_record(answer)
 
@@ -53,13 +48,13 @@ class CreateCalculation
 
     case parts[:operator]
     when '+'
-      parts[:number1] + parts[:number2]
+      add(parts[:number1], parts[:number2])
     when '-'
-      parts[:number1] - parts[:number2]
+      subtract(parts[:number1], parts[:number2])
     when '*'
-      parts[:number1] * parts[:number2]
+      multiply(parts[:number1], parts[:number2])
     when '/'
-      parts[:number1] / parts[:number2].to_d
+      divide(parts[:number1], parts[:number2].to_d)
     end
   end
 
@@ -73,9 +68,7 @@ class CreateCalculation
   def perform_operation(equation, operator)
     return equation unless equation.chars.include?(operator)
 
-    if simple_equation?(equation)
-      return calculate_simple_answer(equation).to_s
-    end
+    return calculate_simple_answer(equation).to_s if simple_equation?(equation)
 
     match_groups = equation.match(/\A(\d+\.?\d?)[#{operator}](\d+\.?\d*)(.*)\z/)
 
@@ -94,17 +87,7 @@ class CreateCalculation
       rest_of_equation = match_groups[4]
     end
 
-    new_number = case operator
-    when '*'
-      multiply(number_1, number_2)
-    when '/'
-      divide(number_1, number_2)
-    when '+'
-      add(number_1, number_2)
-    when '-'
-      subtract(number_1, number_2)
-    end
-
+    new_number = calculate_simple_answer("#{number_1}#{operator}#{number_2}")
     new_equation = "#{beginning_of_equation}#{new_number}#{rest_of_equation}"
 
     perform_operation(new_equation, operator)
