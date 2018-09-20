@@ -137,6 +137,14 @@ RSpec.describe CreateCalculation, type: :service do
               expect(service.call).to eq 10
             end
           end
+
+          context 'using decimals' do
+            let(:equation) { '3+18.82222222222222*3' }
+
+            it 'performs the multiplication first, then addition' do
+              expect(service.call).to eq 59.46666666666666
+            end
+          end
         end
       end
     end

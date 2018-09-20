@@ -4,9 +4,9 @@ class CreateCalculation
   include ActiveModel::Validations
 
   OPERATOR_PATTERN = /[\+\-\*\/]/
-  SIMPLE_EQUATION_PATTERN = /\A(\d+\.?\d?)([\+\-\*\/])(\d+\.?\d?)\z/
-  ENDING_NUMBER_PATTERN = /(\d+\.?\d?)\z/
-  STARTING_NUMBER_PATTERN = /\A(.+)(\d+\.?\d?)\z/
+  SIMPLE_EQUATION_PATTERN = /\A(\d+\.?\d*)([\+\-\*\/])(\d+\.?\d*)\z/
+  ENDING_NUMBER_PATTERN = /(\d+\.?\d*)\z/
+  STARTING_NUMBER_PATTERN = /\A(.+)(\d+\.?\d*)\z/
 
   validates :calculator, presence: true
   validates :equation, { length: { minimum: 3 } }
@@ -77,7 +77,7 @@ class CreateCalculation
       return calculate_simple_answer(equation).to_s
     end
 
-    match_groups = equation.match(/\A(\d+\.?\d?)[#{operator}](\d+\.?\d?)(.*)\z/)
+    match_groups = equation.match(/\A(\d+\.?\d?)[#{operator}](\d+\.?\d*)(.*)\z/)
 
     if match_groups.present?
       start_of_equation = match_groups[1]
@@ -87,7 +87,7 @@ class CreateCalculation
       number_2 = match_groups[2].to_d
       rest_of_equation = match_groups[3]
     else
-      match_groups = equation.match(/\A(.*[*\/+-])(\d+\.?\d?)[#{operator}](\d+\.?\d?)(.*)\z/)
+      match_groups = equation.match(/\A(.*[*\/+-])(\d+\.?\d*)[#{operator}](\d+\.?\d?)(.*)\z/)
       beginning_of_equation = match_groups[1]
       number_1 = match_groups[2].to_d
       number_2 = match_groups[3].to_d
