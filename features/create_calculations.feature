@@ -42,6 +42,13 @@ Scenario: Performing square root via the keyboard
     And I click the "Calculate" button
    Then I should see "2.0" as the answer
 
+Scenario: Performing an equation that starts with a negative sign
+  Given a calculator exists
+    And I navigate to the calculator page
+   When I enter "-1+3" as the equation
+    And I click the "Calculate" button
+   Then I should see "-4.0" as the answer
+
 Scenario: Performing a complex equation via the keyboard
   Given a calculator exists
     And I navigate to the calculator page
