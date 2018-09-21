@@ -242,6 +242,16 @@ RSpec.describe CreateCalculation, type: :service do
         end
       end
 
+      context 'when the equation contains a number directly preceding a square root' do
+        let(:equation) { '6sqrt4' }
+
+        it 'creates an error on the service' do
+          service.call
+
+          expect(service.errors.full_messages.to_sentence).to eq 'Equation must contain an operator between a number and a square root'
+        end
+      end
+
       context 'when the equation contains a letter' do
         context 'with a simple equation' do
           let(:equation) { 'a+2' }

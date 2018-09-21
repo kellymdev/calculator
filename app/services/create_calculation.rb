@@ -14,6 +14,7 @@ class CreateCalculation
   validates :equation, { length: { minimum: 3 } }
   validate :equation_contains_operator
   validate :equation_contains_no_double_operators
+  validate :equation_contains_operator_before_square_root
   validate :equation_contains_more_than_one_number
   validate :equation_contains_no_letters
 
@@ -55,6 +56,10 @@ class CreateCalculation
 
   def contains_double_operator?
     equation.match(DOUBLE_OPERATOR_PATTERN)
+  end
+
+  def equation_contains_operator_before_square_root
+    errors.add(:equation, "must contain an operator between a number and a square root") if equation.match(/(\d+\.?\d*)sqrt/)
   end
 
   def equation_contains_more_than_one_number

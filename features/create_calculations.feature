@@ -70,6 +70,13 @@ Scenario: The equation contains a double operator
     And I click the "Calculate" button
    Then I should see the "Equation must contain only single instances of an operator" error
 
+Scenario: The equation contains a number directly before a square root
+  Given a calculator exists
+    And I navigate to the calculator page
+   When I enter "8sqrt5" as the equation
+    And I click the "Calculate" button
+   Then I should see the "Equation must contain an operator between a number and a square root" error
+
 Scenario: The equation contains letters
   Given a calculator exists
     And I navigate to the calculator page
