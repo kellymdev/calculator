@@ -4,6 +4,7 @@ class CreateCalculation
   include ActiveModel::Validations
 
   OPERATOR_PATTERN = /[\+\-\*\/\^]/
+  DOUBLE_OPERATOR_PATTERN = /[\+\-\*\/\^][\+\-\*\/\^]/
   SIMPLE_EQUATION_PATTERN = /\A(\d+\.?\d*)([\+\-\*\/\^])(\d+\.?\d*)\z/
   BEGINNING_NUMBER_PATTERN = /\A(\d+\.?\d*)(.*)/
   ENDING_NUMBER_PATTERN = /(\d+\.?\d*)\z/
@@ -12,6 +13,7 @@ class CreateCalculation
   validates :calculator, presence: true
   validates :equation, { length: { minimum: 3 } }
   validate :equation_contains_operator
+  validate :equation_contains_no_double_operators
   validate :equation_contains_more_than_one_number
   validate :equation_contains_no_letters
 
@@ -45,6 +47,14 @@ class CreateCalculation
 
   def contains_operator?
     equation.match(OPERATOR_PATTERN) || contains_square_root?
+  end
+
+  def equation_contains_no_double_operators
+    errors.add(:equation, "must contain only single instances of an operator") if contains_double_operator?
+  end
+
+  def contains_double_operator?
+    equation.match(DOUBLE_OPERATOR_PATTERN)
   end
 
   def equation_contains_more_than_one_number

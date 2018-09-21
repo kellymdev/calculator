@@ -232,6 +232,16 @@ RSpec.describe CreateCalculation, type: :service do
         end
       end
 
+      context 'when the equation contains double operators' do
+        let(:equation) { '1++2' }
+
+        it 'creates an error on the service' do
+          service.call
+
+          expect(service.errors.full_messages.to_sentence).to eq 'Equation must contain only single instances of an operator'
+        end
+      end
+
       context 'when the equation contains a letter' do
         context 'with a simple equation' do
           let(:equation) { 'a+2' }

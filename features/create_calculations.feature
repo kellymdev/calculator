@@ -63,6 +63,13 @@ Scenario: The equation doesn't start and end with a number
     And I click the "Calculate" button
    Then I should see the "Equation must contain a number either side of an operator" error
 
+Scenario: The equation contains a double operator
+  Given a calculator exists
+    And I navigate to the calculator page
+   When I enter "1++2" as the equation
+    And I click the "Calculate" button
+   Then I should see the "Equation must contain only single instances of an operator" error
+
 Scenario: The equation contains letters
   Given a calculator exists
     And I navigate to the calculator page
