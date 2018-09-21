@@ -29,6 +29,8 @@ class CreateCalculation
     return unless equation.present?
     return unless valid?
 
+    normalise_equation
+
     answer = calculate_answer
 
     create_calculation_record(answer)
@@ -37,6 +39,12 @@ class CreateCalculation
   end
 
   private
+
+  def normalise_equation
+    if starts_with_negative_sign?
+      @equation = "0#{equation}"
+    end
+  end
 
   def create_calculation_record(answer)
     calculator.calculations.create!(equation: equation, answer: answer)
@@ -63,7 +71,7 @@ class CreateCalculation
   end
 
   def equation_contains_more_than_one_number
-    errors.add(:equation, 'must contain a number either side of an operator') unless starts_and_ends_with_number?
+    errors.add(:equation, 'must contain a number either side of an operator') unless starts_and_ends_with_number_or_negative_sign?
   end
 
   def equation_contains_no_letters
@@ -165,8 +173,20 @@ class CreateCalculation
     number_1 - number_2
   end
 
-  def starts_and_ends_with_number?
-    equation[0].match(/\d/).present? && equation[-1].match(/\d/).present? || contains_square_root? && equation[-1].match(/\d/).present?
+  def starts_and_ends_with_number_or_negative_sign?
+    starts_with_negative_sign? && ends_with_number? || starts_with_number? && ends_with_number? || contains_square_root? && ends_with_number?
+  end
+
+  def starts_with_negative_sign?
+    equation[0] == '-'
+  end
+
+  def starts_with_number?
+    equation[0].match(/\d/).present?
+  end
+
+  def ends_with_number?
+    equation[-1].match(/\d/).present?
   end
 
   def contains_letters?

@@ -94,6 +94,14 @@ RSpec.describe CreateCalculation, type: :service do
         end
       end
 
+      context 'using negative numbers' do
+        let(:equation) { '-1+2' }
+
+        it 'returns the result with a negative sign' do
+          expect(service.call).to eq(-3)
+        end
+      end
+
       context 'performing multiple operations' do
         context 'using two of the same operator' do
           context 'multiplication' do
