@@ -3,8 +3,8 @@
 class CreateCalculation
   include ActiveModel::Validations
 
-  OPERATOR_PATTERN = /[\+\-\*\/]/
-  SIMPLE_EQUATION_PATTERN = /\A(\d+\.?\d*)([\+\-\*\/])(\d+\.?\d*)\z/
+  OPERATOR_PATTERN = /[\+\-\*\/\^]/
+  SIMPLE_EQUATION_PATTERN = /\A(\d+\.?\d*)([\+\-\*\/\^])(\d+\.?\d*)\z/
   BEGINNING_NUMBER_PATTERN = /\A(\d+\.?\d*)(.*)/
   ENDING_NUMBER_PATTERN = /(\d+\.?\d*)\z/
   SQUARE_ROOT = 'sqrt'
@@ -40,7 +40,7 @@ class CreateCalculation
   end
 
   def equation_contains_operator
-    errors.add(:equation, "must contain one of +, -, * or /") unless contains_operator?
+    errors.add(:equation, "must contain one of +, -, *, /, ^ or sqrt") unless contains_operator?
   end
 
   def contains_operator?
@@ -67,11 +67,14 @@ class CreateCalculation
       multiply(parts[:number1], parts[:number2])
     when '/'
       divide(parts[:number1], parts[:number2].to_d)
+    when '^'
+      power(parts[:number1], parts[:number2])
     end
   end
 
   def calculate_answer
     answer = perform_square_root(equation)
+    answer = perform_operation(answer, '^')
     answer = perform_operation(answer, '*')
     answer = perform_operation(answer, '/')
     answer = perform_operation(answer, '+')
@@ -99,7 +102,7 @@ class CreateCalculation
 
     return calculate_simple_answer(equation).to_s if simple_equation?(equation)
 
-    match_groups = equation.match(/\A(\d+\.?\d?)[#{operator}](\d+\.?\d*)(.*)\z/)
+    match_groups = equation.match(/\A(\d+\.?\d?)[\\#{operator}](\d+\.?\d*)(.*)\z/)
 
     if match_groups.present?
       start_of_equation = match_groups[1]
@@ -109,7 +112,8 @@ class CreateCalculation
       number_2 = match_groups[2].to_d
       rest_of_equation = match_groups[3]
     else
-      match_groups = equation.match(/\A(.*[*\/+-])(\d+\.?\d*)[#{operator}](\d+\.?\d?)(.*)\z/)
+      match_groups = equation.match(/\A(.*[*\/+-])(\d+\.?\d*)[\\#{operator}](\d+\.?\d?)(.*)\z/)
+
       beginning_of_equation = match_groups[1]
       number_1 = match_groups[2].to_d
       number_2 = match_groups[3].to_d
@@ -124,6 +128,10 @@ class CreateCalculation
 
   def square_root(number)
     Math.sqrt(number)
+  end
+
+  def power(number_1, number_2)
+    number_1 ** number_2
   end
 
   def multiply(number_1, number_2)

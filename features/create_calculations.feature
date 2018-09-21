@@ -28,6 +28,13 @@ Scenario: Performing division via the keyboard
     And I click the "Calculate" button
    Then I should see "2.5" as the answer
 
+Scenario: Performing power of via the keyboard
+  Given a calculator exists
+    And I navigate to the calculator page
+   When I enter "2^3" as the equation
+    And I click the "Calculate" button
+   Then I should see "8.0" as the answer
+
 Scenario: Performing square root via the keyboard
   Given a calculator exists
     And I navigate to the calculator page
@@ -47,7 +54,7 @@ Scenario: The equation is missing an operator
     And I navigate to the calculator page
    When I enter "987" as the equation
     And I click the "Calculate" button
-   Then I should see the "Equation must contain one of +, -, * or /" error
+   Then I should see the "Equation must contain one of +, -, *, /, ^ or sqrt" error
 
 Scenario: The equation doesn't start and end with a number
   Given a calculator exists

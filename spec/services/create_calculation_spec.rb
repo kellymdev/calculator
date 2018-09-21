@@ -86,6 +86,14 @@ RSpec.describe CreateCalculation, type: :service do
         end
       end
 
+      context 'using power of' do
+        let(:equation) { '2^2' }
+
+        it 'returns the power of the two numbers' do
+          expect(service.call).to eq 4
+        end
+      end
+
       context 'performing multiple operations' do
         context 'using two of the same operator' do
           context 'multiplication' do
@@ -146,6 +154,14 @@ RSpec.describe CreateCalculation, type: :service do
             end
           end
 
+          context 'with power of' do
+            let(:equation) { '10+2^3' }
+
+            it 'performs the power of first, then addition' do
+              expect(service.call).to eq 18
+            end
+          end
+
           context 'with square root' do
             let(:equation) { '3+sqrt4' }
 
@@ -182,7 +198,7 @@ RSpec.describe CreateCalculation, type: :service do
         it 'creates an error on the service' do
           service.call
 
-          expect(service.errors.full_messages.to_sentence).to eq 'Equation is too short (minimum is 3 characters) and Equation must contain one of +, -, * or /'
+          expect(service.errors.full_messages.to_sentence).to eq 'Equation is too short (minimum is 3 characters) and Equation must contain one of +, -, *, /, ^ or sqrt'
         end
       end
 
@@ -192,7 +208,7 @@ RSpec.describe CreateCalculation, type: :service do
         it 'creates an error on the service' do
           service.call
 
-          expect(service.errors.full_messages.to_sentence).to eq 'Equation must contain one of +, -, * or /'
+          expect(service.errors.full_messages.to_sentence).to eq 'Equation must contain one of +, -, *, /, ^ or sqrt'
         end
       end
 
