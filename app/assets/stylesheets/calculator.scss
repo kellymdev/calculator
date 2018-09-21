@@ -31,11 +31,16 @@ body {
   color: red;
 }
 
+.success-message {
+  color: green;
+  margin-bottom: 20px;
+}
+
 .calculator {
   background-color: gray;
   padding: 20px;
   border-radius: 5px;
-  max-width: 280px;
+  max-width: 320px;
 
   .answer {
     p {
@@ -49,7 +54,7 @@ body {
     font-size: 1.5em;
     border-radius: 2px;
     margin: 5px;
-    width: 265px;
+    width: 300px;
   }
 
   .calculate,

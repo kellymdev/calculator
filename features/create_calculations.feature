@@ -28,6 +28,13 @@ Scenario: Performing division via the keyboard
     And I click the "Calculate" button
    Then I should see "2.5" as the answer
 
+Scenario: Performing square root via the keyboard
+  Given a calculator exists
+    And I navigate to the calculator page
+   When I enter "sqrt4" as the equation
+    And I click the "Calculate" button
+   Then I should see "2.0" as the answer
+
 Scenario: Performing a complex equation via the keyboard
   Given a calculator exists
     And I navigate to the calculator page

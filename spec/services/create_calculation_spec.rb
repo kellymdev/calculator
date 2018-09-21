@@ -78,6 +78,14 @@ RSpec.describe CreateCalculation, type: :service do
         end
       end
 
+      context 'using sqrt' do
+        let(:equation) { 'sqrt4' }
+
+        it 'returns the square root of the number' do
+          expect(service.call).to eq 2
+        end
+      end
+
       context 'performing multiple operations' do
         context 'using two of the same operator' do
           context 'multiplication' do
@@ -138,11 +146,29 @@ RSpec.describe CreateCalculation, type: :service do
             end
           end
 
-          context 'using decimals' do
-            let(:equation) { '3+18.82222222222222*3' }
+          context 'with square root' do
+            let(:equation) { '3+sqrt4' }
 
-            it 'performs the multiplication first, then addition' do
-              expect(service.call).to eq 59.46666666666666
+            it 'performs the square root first, then addition' do
+              expect(service.call).to eq 5
+            end
+          end
+
+          context 'using decimals' do
+            context 'addition and multiplication' do
+              let(:equation) { '3+18.82222222222222*3' }
+
+              it 'performs the multiplication first, then addition' do
+                expect(service.call).to eq 59.46666666666666
+              end
+            end
+
+            context 'multiplication and square root' do
+              let(:equation) { '2*sqrt10.5' }
+
+              it 'performs the square root first, then multiplication' do
+                expect(service.call).to eq 6.48074069840786
+              end
             end
           end
         end

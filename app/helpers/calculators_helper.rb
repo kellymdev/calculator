@@ -6,7 +6,7 @@ module CalculatorsHelper
   end
 
   def operator_buttons
-    operators = %w(+ - * / .)
+    operators = %w(+ - * / . sqrt)
 
     operators.map do |operator|
       button_tag(operator, class: "calculator-button button-#{operator}")

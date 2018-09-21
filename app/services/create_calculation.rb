@@ -5,7 +5,9 @@ class CreateCalculation
 
   OPERATOR_PATTERN = /[\+\-\*\/]/
   SIMPLE_EQUATION_PATTERN = /\A(\d+\.?\d*)([\+\-\*\/])(\d+\.?\d*)\z/
+  BEGINNING_NUMBER_PATTERN = /\A(\d+\.?\d*)(.*)/
   ENDING_NUMBER_PATTERN = /(\d+\.?\d*)\z/
+  SQUARE_ROOT = 'sqrt'
 
   validates :calculator, presence: true
   validates :equation, { length: { minimum: 3 } }
@@ -38,7 +40,11 @@ class CreateCalculation
   end
 
   def equation_contains_operator
-    errors.add(:equation, "must contain one of +, -, * or /") unless equation.match(OPERATOR_PATTERN)
+    errors.add(:equation, "must contain one of +, -, * or /") unless contains_operator?
+  end
+
+  def contains_operator?
+    equation.match(OPERATOR_PATTERN) || contains_square_root?
   end
 
   def equation_contains_more_than_one_number
@@ -46,7 +52,7 @@ class CreateCalculation
   end
 
   def equation_contains_no_letters
-    errors.add(:equation, 'must not contain any letters') if equation.match(/[a-zA-Z]/)
+    errors.add(:equation, 'must not contain any letters') if contains_letters?
   end
 
   def calculate_simple_answer(equation)
@@ -65,10 +71,27 @@ class CreateCalculation
   end
 
   def calculate_answer
-    answer = perform_operation(equation, '*')
+    answer = perform_square_root(equation)
+    answer = perform_operation(answer, '*')
     answer = perform_operation(answer, '/')
     answer = perform_operation(answer, '+')
     perform_operation(answer, '-').to_d
+  end
+
+  def perform_square_root(equation)
+    return equation unless contains_square_root?
+
+    split_equation = equation.split(SQUARE_ROOT)
+
+    beginning_of_equation = split_equation[0]
+
+    matches = split_equation[1].match(BEGINNING_NUMBER_PATTERN)
+    number = matches[1].to_d
+    rest_of_equation = matches[2]
+
+    new_number = square_root(number)
+
+    "#{beginning_of_equation}#{new_number}#{rest_of_equation}"
   end
 
   def perform_operation(equation, operator)
@@ -99,6 +122,10 @@ class CreateCalculation
     perform_operation(new_equation, operator)
   end
 
+  def square_root(number)
+    Math.sqrt(number)
+  end
+
   def multiply(number_1, number_2)
     number_1 * number_2
   end
@@ -116,7 +143,15 @@ class CreateCalculation
   end
 
   def starts_and_ends_with_number?
-    equation[0].match(/\d/).present? && equation[-1].match(/\d/).present?
+    equation[0].match(/\d/).present? && equation[-1].match(/\d/).present? || contains_square_root? && equation[-1].match(/\d/).present?
+  end
+
+  def contains_letters?
+    equation.match(/[a-zA-Z]/) && !contains_square_root?
+  end
+
+  def contains_square_root?
+    equation.match(/#{SQUARE_ROOT}/).present?
   end
 
   def simple_equation?(equation)
